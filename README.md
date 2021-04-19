@@ -1,1 +1,1 @@
-# PrzedmiotFakultetywny
+# PrzedmiotFakultatywny
