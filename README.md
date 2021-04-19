@@ -1,2 +1,2 @@
-# PrzedmiotFakultetywny
+# PrzedmiotFakultatywny
 ## Ćwiczenia 1
