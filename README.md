@@ -1,1 +1,2 @@
 # PrzedmiotFakultatywny
+wykład + ćwiczenia
