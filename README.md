@@ -1,2 +1,2 @@
 # PrzedmiotFakultatywny
-## Projekt wykonywany w ramach ćwiczeń
+Projekt wykonywany w ramach ćwiczeń
