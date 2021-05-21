@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { useHistory } from 'react-router';
 import clsx from 'clsx';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
@@ -25,7 +25,7 @@ const drawerWidth = 250;
 const useStyles = makeStyles((theme: Theme) =>
    createStyles({
       appBar: {
-         position: 'relative',
+         position: 'fixed',
          zIndex: theme.zIndex.drawer + 1,
          background:
             'linear-gradient(90deg,rgba(111, 128, 255, 1) 100%,rgba(145, 179, 250, 0.770483193277311) 63%)',
@@ -79,10 +79,13 @@ const useStyles = makeStyles((theme: Theme) =>
          // necessary for content to be below app bar
          ...theme.mixins.toolbar,
       },
+      content: {
+         padding: theme.spacing(7),
+      },
    }),
 );
 
-const NavPanel: React.FC = () => {
+const NavPanel: React.FC = ({ children }) => {
    const classes = useStyles();
    const theme = useTheme();
    const history = useHistory();
@@ -130,7 +133,7 @@ const NavPanel: React.FC = () => {
                   <MenuIcon />
                </IconButton>
                <Typography variant="h6" noWrap>
-                  My Note APP
+                  My Note App
                </Typography>
             </Toolbar>
          </AppBar>
@@ -159,6 +162,7 @@ const NavPanel: React.FC = () => {
                <li>{redirectTo('/articles', <ImportContactsRoundedIcon />, 'Articles')}</li>
             </List>
          </Drawer>
+         <main className={classes.content}>{children}</main>
       </div>
    );
 };

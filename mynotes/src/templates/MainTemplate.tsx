@@ -3,8 +3,7 @@ import NavPanel from '../components/NavPanel';
 
 const MainTemplate: React.FC = ({ children }) => (
    <>
-      <NavPanel />
-      {children}
+      <NavPanel>{children}</NavPanel>
    </>
 );
 
