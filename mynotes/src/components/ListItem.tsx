@@ -1,59 +1,82 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { relative } from 'path';
+import EmptyStateImage from '../assets/images/emptyState.jpg';
 
 interface ListItemProps {
+   id: Number;
+   type: string;
    title: string;
+   autor?: string;
    description?: string;
    link?: string;
-   type: string;
-   autor?: string;
    imageLink?: string;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
    wrapper: {
       padding: '0 30px 90px 0',
       width: '80%',
       margin: 'auto',
-      border:
-         '2px solid linear-gradient(90deg,rgba(111, 128, 255, 1) 100%,rgba(145, 179, 250, 0.770483193277311) 63%)',
       display: 'flex',
+      flexDirection: 'row',
       alignItems: 'center',
+      animation: 'fadeIn .5s ease-in-out',
 
-      animation: 'appear 0.5s ease',
+      [theme.breakpoints.down('sm')]: {
+         flexDirection: 'column',
+         width: '70%',
+      },
    },
 
-   '@keyframes appear': {
-      '0%': {
-         opacity: 0,
-         top: '35px',
-      },
-      '100%': {
-         opacity: 1,
-         top: 0,
+   '@global': {
+      '@keyframes fadeIn': {
+         '0%': {
+            opacity: 0,
+         },
+         '100%': {
+            opacity: 1,
+         },
       },
    },
 
    image: {
-      flexShrank: 0,
+      flexShrink: 0,
       marginRight: '30px',
       width: '150px',
       height: '150px',
-      bordeRadius: '50%',
+      borderRadius: '50%',
    },
-   imageNone: {
-      //  @extend .image;
 
-      background: 'url("https://unsplash.it/200/200") no-repet',
+   imageNone: {
+      flexShrink: 0,
+      marginRight: '30px',
+      width: '150px',
+      height: '150px',
+      borderRadius: '50%',
+      backgroundImage: `url(${EmptyStateImage})`,
       backgroundSize: 'cover',
    },
-   description: {
+
+   content: {
+      textAlign: 'left',
       margin: '10px 0 20px',
+
+      [theme.breakpoints.down('sm')]: {
+         textAlign: 'center',
+      },
+   },
+
+   description: {
       fontWeight: 300,
    },
-});
+
+   buttonWrapper: {
+      '& Button': {
+         margin: '5px',
+      },
+   },
+}));
 
 const ListItem: React.FC<ListItemProps> = ({ ...item }) => {
    const classes = useStyles();
@@ -61,18 +84,30 @@ const ListItem: React.FC<ListItemProps> = ({ ...item }) => {
 
    return (
       <div className={classes.wrapper}>
-         {item.imageLink && (
+         {item.imageLink ? (
             <ImageTag src={item.imageLink} className={classes.image} alt={item.title} />
+         ) : (
+            <ImageTag className={classes.imageNone} alt="Default image" />
          )}
-         <div>
-            <h1>{item.title}</h1>
-            <p className={classes.description}> {item.description}</p>
-            {item.link && (
-               <Button variant="outlined" color="primary" href={item.link}>
-                  visit page
+         <div className={classes.content}>
+            <h2>{item.title}</h2>
+            {item.autor && <p>Autor: {item.autor}</p>}
+            {item.description && <p className={classes.description}> {item.description}</p>}
+
+            <div className={classes.buttonWrapper}>
+               <Button variant="outlined" color="default">
+                  show more
                </Button>
-            )}
-            <p>{item.autor}</p>
+               {item.link && (
+                  <Button variant="outlined" color="primary" href={item.link}>
+                     visit {item.type} link
+                  </Button>
+               )}
+
+               <Button variant="outlined" color="secondary">
+                  delete
+               </Button>
+            </div>
          </div>
       </div>
    );
