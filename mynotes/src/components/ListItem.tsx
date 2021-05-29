@@ -1,21 +1,22 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
+import { Note } from '../store/reducers/notes.reducer';
+import { Article } from '../store/reducers/articles.reducer';
+import { Song } from '../store/reducers/songs.reducer';
 import EmptyStateImage from '../assets/images/emptyState.jpg';
 
-interface ListItemProps {
-   id: Number;
-   type: string;
-   title: string;
-   autor?: string;
-   description?: string;
-   link?: string;
-   imageLink?: string;
+export type itemTypes = Article | Song | Note;
+
+export interface ListItemProps {
+   item: itemTypes;
+   onDelete?: (item: itemTypes) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
    wrapper: {
-      padding: '0 30px 90px 0',
+      padding: '20px 30px 30px 30px',
       width: '80%',
       margin: 'auto',
       display: 'flex',
@@ -42,10 +43,13 @@ const useStyles = makeStyles((theme) => ({
 
    image: {
       flexShrink: 0,
-      marginRight: '30px',
       width: '150px',
       height: '150px',
       borderRadius: '50%',
+
+      [theme.breakpoints.up('md')]: {
+         marginRight: '40px',
+      },
    },
 
    imageNone: {
@@ -78,9 +82,16 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const ListItem: React.FC<ListItemProps> = ({ ...item }) => {
+const ListItem: React.FC<ListItemProps> = ({ item, onDelete }) => {
    const classes = useStyles();
    const ImageTag = item.imageLink ? 'img' : 'div';
+   const history = useHistory();
+
+   const deleteItem = () => {
+      if (onDelete) {
+         onDelete(item);
+      }
+   };
 
    return (
       <div className={classes.wrapper}>
@@ -91,12 +102,16 @@ const ListItem: React.FC<ListItemProps> = ({ ...item }) => {
          )}
          <div className={classes.content}>
             <h2>{item.title}</h2>
-            {item.autor && <p>Autor: {item.autor}</p>}
-            {item.description && <p className={classes.description}> {item.description}</p>}
+            {'author' in item && <p>Autor: {item.author}</p>}
+            {'description' in item && <p className={classes.description}> {item.description}</p>}
 
             <div className={classes.buttonWrapper}>
-               <Button variant="outlined" color="default">
-                  show more
+               <Button
+                  variant="outlined"
+                  color="default"
+                  onClick={() => history.push(`/${item.type}/${item.id}`)}
+               >
+                  edit
                </Button>
                {item.link && (
                   <Button variant="outlined" color="primary" href={item.link}>
@@ -104,7 +119,7 @@ const ListItem: React.FC<ListItemProps> = ({ ...item }) => {
                   </Button>
                )}
 
-               <Button variant="outlined" color="secondary">
+               <Button variant="outlined" color="secondary" onClick={deleteItem}>
                   delete
                </Button>
             </div>

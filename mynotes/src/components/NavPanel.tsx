@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import clsx from 'clsx';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
@@ -19,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LibraryBooksRoundedIcon from '@material-ui/icons/LibraryBooksRounded';
 import LibraryMusicRoundedIcon from '@material-ui/icons/LibraryMusicRounded';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const drawerWidth = 250;
 
@@ -157,7 +158,8 @@ const NavPanel: React.FC = ({ children }) => {
             </div>
             <Divider />
             <List>
-               <li>{redirectTo('/', <LibraryBooksRoundedIcon />, 'Notes')}</li>
+               <li>{redirectTo('/add-item', <AddCircleIcon />, 'Add Item')}</li>
+               <li>{redirectTo('/notes', <LibraryBooksRoundedIcon />, 'Notes')}</li>
                <li>{redirectTo('/songs', <LibraryMusicRoundedIcon />, 'Songs')}</li>
                <li>{redirectTo('/articles', <ImportContactsRoundedIcon />, 'Articles')}</li>
             </List>
